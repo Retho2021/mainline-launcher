@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenue !</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #121212; /* Même fond sombre */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            /* Pour éviter de pouvoir sélectionner le texte pendant le chargement */
+            user-select: none; 
+            -webkit-app-region: drag; /* Permet de déplacer la fenêtre */
+        }
+        .splash-logo {
+            width: 300px; /* Taille du logo au démarrage */
+            margin-bottom: 30px;
+            animation: fadein 2s ease-in;
+        }
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            font-size: 1.5em;
+            animation: slideup 2s ease-out;
+        }
+        .highlight {
+            color: #0066ff;
+            font-weight: bold;
+        }
+
+        /* Petites animations pour le style */
+        @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideup { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+    <img src="assets/logo.png" class="splash-logo">
+    <h1><span class="highlight">MainLine Studio</span> - Bienvenue !</h1>
+</body>
+</html>

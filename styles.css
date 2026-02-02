@@ -1,0 +1,164 @@
+/* --- CONFIGURATION GLOBALE --- */
+:root {
+    --bg-color: #121212;
+    --sidebar-color: #1a1a1a;
+    --card-color: #252525;
+    --text-main: #ffffff;
+    --text-muted: #aaaaaa;
+    --ml-blue: #0066ff;
+    --ml-yellow: #ffcc00;
+    --ml-orange: #ff9900;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex; /* C'est ça qui met sidebar et content côte à côte */
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- SCROLLBAR PERSONNALISÉE (Plus joli) --- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #121212; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ml-blue); }
+
+/* --- BARRE LATÉRALE --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-color);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column; /* Les éléments s'empilent verticalement */
+    border-right: 1px solid #333;
+    flex-shrink: 0; /* Empêche la sidebar de s'écraser */
+}
+
+.brand-container { margin-bottom: 40px; text-align: center; }
+.sidebar-logo {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.3)); 
+}
+
+.menu-item {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: 0.3s;
+    font-weight: 500;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item:hover { background-color: rgba(255, 255, 255, 0.05); color: white; }
+.menu-item.active {
+    background-color: var(--ml-blue); 
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+}
+
+/* --- CONTENU PRINCIPAL --- */
+.content {
+    flex: 1; /* Prend tout l'espace restant à droite */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Pour bien positionner les éléments internes */
+}
+
+#view-dashboard {
+    padding: 40px;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box; /* Important pour les marges */
+}
+
+h2 { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 30px; font-weight: 300; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- CARTES --- */
+.card {
+    background-color: var(--card-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--ml-blue);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.card-img {
+    height: 160px;
+    background-color: #333;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-info { padding: 20px; }
+.card-tag {
+    font-size: 0.75em;
+    font-weight: bold;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.tag-dev { background-color: rgba(0, 102, 255, 0.2); color: var(--ml-blue); }
+.tag-cine { background-color: rgba(255, 204, 0, 0.2); color: var(--ml-yellow); }
+
+.card h3 { margin: 0 0 10px 0; font-size: 1.2em; }
+.card p { margin: 0; font-size: 0.9em; color: var(--text-muted); line-height: 1.4; }
+
+/* --- NAVIGATEUR INTERNE --- */
+.browser-toolbar {
+    background-color: #1a1a1a;
+    padding: 10px 20px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-back {
+    background-color: transparent;
+    border: 1px solid #444;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-back:hover { background-color: var(--ml-blue); border-color: var(--ml-blue); }
+#browser-title { font-weight: bold; color: var(--ml-yellow); }
+
+/* --- PAGE À PROPOS --- */
+.tagline { font-size: 1.2em; color: var(--ml-yellow); margin-bottom: 40px; font-style: italic; }
+.split-layout { display: flex; gap: 40px; flex-wrap: wrap; }
+.text-block {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 3px solid var(--ml-blue);
+}
+.text-block h3 { margin-top: 0; color: white; }
+.legal-section { color: #666; font-size: 0.9em; }
+.legal-section h3 { color: #888; text-transform: uppercase; font-size: 0.8em; }
