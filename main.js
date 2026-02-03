@@ -1,7 +1,11 @@
-require('update-electron-app')({
-  repo: 'Retho2021/mainline-launcher', // Remplacez par votre info exacte !
-  updateInterval: '1 hour' // Vérifie toutes les heures (ou au lancement)
+// --- CORRECTION : On importe d'abord, on lance ensuite ---
+const { updateElectronApp } = require('update-electron-app');
+
+updateElectronApp({
+  repo: 'Retho2021/mainline-launcher', // J'ai repris votre pseudo de la capture
+  updateInterval: '1 hour'
 });
+
 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
