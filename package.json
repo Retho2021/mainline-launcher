@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "App MainLineStudio Launcher",
   "main": "main.js",
-  "scripts": {
+"scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make", 
+    "publish": "electron-forge publish" 
   },
+  
   "keywords": [],
   "author": "MLS Team",
   "license": "ISC",
