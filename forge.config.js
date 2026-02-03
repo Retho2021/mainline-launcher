@@ -42,4 +42,17 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'VOTRE_PSEUDO',    // ex: MainLineStudio
+          name: 'mainline-launcher' // ex: mainline-launcher
+        },
+        prerelease: false,
+        draft: true // Crée un brouillon sur GitHub (plus sûr pour vérifier avant de valider)
+      }
+    }
+  ]
 };
