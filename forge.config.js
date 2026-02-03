@@ -47,7 +47,7 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'VOTRE_PSEUDO',    // ex: MainLineStudio
+          owner: 'Retho2021',    // ex: MainLineStudio
           name: 'mainline-launcher' // ex: mainline-launcher
         },
         prerelease: false,
