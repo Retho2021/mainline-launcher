@@ -81,3 +81,31 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+// --- DISCORD RICH PRESENCE ---
+const DiscordRPC = require('discord-rpc');
+const clientId = 'VOTRE_APPLICATION_ID_ICI'; // Collez les chiffres copiés à l'étape 1
+
+const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+
+DiscordRPC.register(clientId);
+
+async function setActivity() {
+  if (!rpc) return;
+  
+  rpc.setActivity({
+    details: 'Explore les projets', // Ligne 1
+    state: 'Dans le Hub',           // Ligne 2
+    startTimestamp: new Date(),     // Affiche le temps écoulé
+    largeImageKey: 'logo',          // (Il faut uploader l'image sur le portail Discord, sinon enlevez cette ligne)
+    largeImageText: 'MainLine Studio',
+    instance: false,
+  });
+}
+
+rpc.on('ready', () => {
+  setActivity();
+  console.log('Discord RPC connecté !');
+});
+
+rpc.login({ clientId }).catch(console.error);
+// ------------------------------
