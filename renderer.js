@@ -147,3 +147,48 @@ function updateActiveButton(type) {
 // Lancement
 fetchProjects();
 filterProjects('all');  // On affiche tout au démarrage
+
+// --- GESTION DES NEWS AUTOMATIQUES ---
+async function loadNews() {
+    const newsContainer = document.getElementById('news-container'); // On va créer ce div après
+    const user = 'Retho2021'; // Votre pseudo
+    const repo = 'mainline-launcher'; // Votre repo
+
+    try {
+        // On demande à GitHub les issues avec le label 'news'
+        const response = await fetch(`https://api.github.com/repos/${user}/${repo}/issues?labels=news&state=open`);
+        const data = await response.json();
+
+        newsContainer.innerHTML = ''; // On vide le chargement
+
+        if (data.length === 0) {
+            newsContainer.innerHTML = '<p class="no-news">Aucune actualité pour le moment.</p>';
+            return;
+        }
+
+        // Pour chaque news trouvée...
+        data.forEach(item => {
+            const date = new Date(item.created_at).toLocaleDateString('fr-FR');
+            
+            // On crée la carte HTML
+            const newsCard = document.createElement('div');
+            newsCard.className = 'news-card';
+            newsCard.innerHTML = `
+                <div class="news-header">
+                    <span class="news-tag">INFO</span>
+                    <span class="news-date">${date}</span>
+                </div>
+                <h4>${item.title}</h4>
+                <p>${item.body.substring(0, 100)}...</p> <a href="${item.html_url}" target="_blank" class="read-more">Lire la suite ➜</a>
+            `;
+            newsContainer.appendChild(newsCard);
+        });
+
+    } catch (error) {
+        console.error('Erreur news:', error);
+        newsContainer.innerHTML = '<p class="error-msg">Impossible de charger les actus.</p>';
+    }
+}
+
+// N'oubliez pas de lancer la fonction au démarrage !
+loadNews();
