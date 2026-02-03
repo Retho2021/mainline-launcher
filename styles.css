@@ -1,3 +1,55 @@
+* {
+    box-sizing: border-box; /* Empêche les marges de casser les dimensions */
+}
+/* --- BARRE DE TITRE CUSTOM --- */
+#title-bar {
+    position: absolute; /* Reste collé en haut */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background-color: #151515; /* Un poil plus foncé que la sidebar */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9999; /* Toujours au dessus de tout */
+    -webkit-app-region: drag; /* <--- MAGIE : Permet de déplacer la fenêtre */
+    user-select: none;
+}
+
+.app-title {
+    color: #666;
+    font-size: 12px;
+    margin-left: 15px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.window-controls {
+    display: flex;
+    height: 100%;
+    -webkit-app-region: no-drag; /* Important : sinon on ne peut pas cliquer les boutons */
+}
+
+.control-btn {
+    width: 45px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #aaa;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.control-btn:hover { background-color: #333; color: white; }
+.btn-close:hover { background-color: #e81123; color: white; } /* Rouge Windows au survol */
+
+/* --- AJUSTEMENT DES AUTRES ÉLÉMENTS --- */
+/* Comme la barre fait 30px de haut, il faut descendre le reste */
+.sidebar { margin-top: 30px; height: calc(100vh - 30px); }
+.content { margin-top: 30px; height: calc(100vh - 30px); }
+
 /* --- CONFIGURATION GLOBALE --- */
 :root {
     --bg-color: #121212;
@@ -30,11 +82,18 @@ body {
 .sidebar {
     width: 260px;
     background-color: var(--sidebar-color);
-    padding: 30px 20px;
+    padding: 30px 20px; 
+    
     display: flex;
-    flex-direction: column; /* Les éléments s'empilent verticalement */
+    flex-direction: column;
     border-right: 1px solid #333;
-    flex-shrink: 0; /* Empêche la sidebar de s'écraser */
+    flex-shrink: 0;
+    
+
+    margin-top: 30px; 
+    height: calc(100vh - 30px); 
+    
+    box-sizing: border-box; 
 }
 
 .brand-container { margin-bottom: 40px; text-align: center; }
@@ -162,3 +221,9 @@ h2 { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 30px; f
 .text-block h3 { margin-top: 0; color: white; }
 .legal-section { color: #666; font-size: 0.9em; }
 .legal-section h3 { color: #888; text-transform: uppercase; font-size: 0.8em; }
+
+
+.sidebar > div:last-child {
+    margin-top: auto;
+    padding-bottom: 10px; /* Ajoute un petit coussin d'air en bas */
+}

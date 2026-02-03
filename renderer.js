@@ -9,7 +9,22 @@ const viewAbout = document.getElementById('view-about');
 const BASE_GIST_URL = "https://gist.githubusercontent.com/Retho2021/4b917cfa380ac453979435c0fae5016b/raw/data.json";
 const DATA_URL = `${BASE_GIST_URL}?t=${Date.now()}`;
 const grid = document.getElementById('project-grid');
-let projects = []; // On stocke les projets ici une fois chargés
+const { ipcRenderer } = require('electron'); // On ajoute ipcRenderer
+
+// --- GESTION BARRE DE TITRE ---
+document.getElementById('btn-min').addEventListener('click', () => {
+    ipcRenderer.send('minimize-app');
+});
+
+document.getElementById('btn-max').addEventListener('click', () => {
+    ipcRenderer.send('maximize-app');
+});
+
+document.getElementById('btn-close').addEventListener('click', () => {
+    ipcRenderer.send('close-app');
+});
+
+let projects = [];
 
 function showAboutPage() {
     // On cache tout le reste
@@ -43,6 +58,7 @@ function displayProjects(filter = 'all') {
             card.className = 'card';
             const tagColorClass = proj.category === 'dev' ? 'tag-dev' : 'tag-cine';
 
+            // On crée le HTML
             card.innerHTML = `
                 <div class="card-img" style="background-image: url('${proj.image}')"></div>
                 <div class="card-info">
@@ -52,11 +68,27 @@ function displayProjects(filter = 'all') {
                 </div>
             `;
             
-            // --- CHANGEMENT ICI ---
-            // Au clic, on appelle notre fonction interne
+            // --- GESTION DU CLIC (Ouvrir le projet) ---
             card.addEventListener('click', () => {
                 openProjectInApp(proj.link, proj.title);
             });
+
+            // --- GESTION DU GIF (Effet Cinéma) ---
+            // On cible l'image à l'intérieur de la carte
+            const imgDiv = card.querySelector('.card-img');
+
+            // Seulement si un GIF est défini dans le JSON
+            if (proj.gif) {
+                // Quand la souris ENTRE
+                card.addEventListener('mouseenter', () => {
+                    imgDiv.style.backgroundImage = `url('${proj.gif}')`;
+                });
+
+                // Quand la souris SORT
+                card.addEventListener('mouseleave', () => {
+                    imgDiv.style.backgroundImage = `url('${proj.image}')`;
+                });
+            }
 
             grid.appendChild(card);
         }

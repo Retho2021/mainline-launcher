@@ -1,18 +1,26 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
-// On définit les variables des fenêtres en dehors pour qu'elles soient accessibles partout
 let mainWindow;
 let splashWindow;
 
 const createWindows = () => {
-  // 1. Création de la fenêtre principale (cachée au début)
+// 1. Fenêtre Principale
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    title: "MainLine Studio - Hub",
-    autoHideMenuBar: true,
-    show: false, // <-- IMPORTANT : Elle est créée mais invisible
+    minWidth: 900,
+    minHeight: 600,
+    
+    // --- LE BLOC ANTI-BARRE BLANCHE ---
+    frame: false,             // La méthode classique
+    titleBarStyle: 'hidden',  // La méthode MacOS/Windows moderne
+    titleBarOverlay: false,   // Désactive les contrôles système par dessus
+    thickFrame: false,        // Enlève la bordure de redimensionnement Windows native
+    // ----------------------------------
+
+    show: false,
+    backgroundColor: '#121212',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -22,45 +30,45 @@ const createWindows = () => {
 
   mainWindow.loadFile('index.html');
 
-  // 2. Création de la fenêtre de Splash Screen (visible immédiatement)
+  // 2. Splash Screen
   splashWindow = new BrowserWindow({
     width: 600,
     height: 400,
-    transparent: false, // Si true, le fond carré disparaît (plus complexe à gérer)
-    frame: false,       // Pas de barre de titre ni de bordures Windows
-    alwaysOnTop: true,  // Reste au premier plan
-    resizable: false,
-    webPreferences: {
-        nodeIntegration: false // Pas besoin de Node ici
-    }
+    frame: false,
+    alwaysOnTop: true,
+    transparent: true, // Si votre logo est png transparent, c'est mieux
+    webPreferences: { nodeIntegration: false }
   });
 
   splashWindow.loadFile('splash.html');
-  splashWindow.center(); // On la centre sur l'écran
+  splashWindow.center();
 
-  // --- LA LOGIQUE DE TRANSITION ---
-
-  // Quand la fenêtre principale est prête visuellement :
+  // Transition
   mainWindow.once('ready-to-show', () => {
-    // On attend un petit peu (ex: 2.5 secondes) pour laisser l'utilisateur voir le logo
-    // C'est purement esthétique.
     setTimeout(() => {
-        splashWindow.close(); // On ferme le splash
-        mainWindow.show();    // On affiche la principale
-        splashWindow = null;  // Nettoyage mémoire
-    }, 5500); 
+        if (splashWindow) splashWindow.close();
+        mainWindow.show();
+    }, 3000); 
   });
 };
 
-// Démarrage de l'app
+// --- NOUVEAU : Écoute des boutons de NOTRE barre de titre ---
+ipcMain.on('minimize-app', () => mainWindow.minimize());
+ipcMain.on('maximize-app', () => {
+    if (mainWindow.isMaximized()) {
+        mainWindow.unmaximize();
+    } else {
+        mainWindow.maximize();
+    }
+});
+ipcMain.on('close-app', () => app.quit());
+
+// Démarrage standard
 app.whenReady().then(() => {
     createWindows();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindows();
-  });
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindows();
+    });
 });
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
+app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
